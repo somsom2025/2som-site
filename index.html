@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2SOM ARCHITECTS</title>
+<meta name="description" content="2SOM 건축사사무소 — Architecture &amp; Creative Design">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--red:#C8102E;--ink:#111;--sub:#8A8A8A;--line:#E4E4E4;--side:130px;--gap:30px;--cols:7;--maxw:none}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:#fff;color:var(--ink);font-family:Pretendard,-apple-system,"Malgun Gothic",sans-serif;font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:1px solid var(--ink);outline-offset:3px}
+
+.page{height:100%;display:grid;grid-template-rows:auto 1fr auto;padding:0 var(--side)}
+
+header{display:flex;justify-content:space-between;align-items:center;padding-top:50px}
+.brand{display:block;line-height:0}
+.brand img{width:260px;height:auto;display:block}
+nav{display:flex;gap:44px;font-size:12px;letter-spacing:.09em}
+nav a{padding-bottom:3px;border-bottom:1px solid transparent}
+nav a:hover,nav a.on{border-color:var(--ink)}
+
+.stage{display:grid;grid-template-rows:auto 1fr auto;justify-items:center;min-height:0;padding-bottom:8px}
+.topbar{align-self:start;width:100%;max-width:var(--maxw);margin:0 auto;padding-top:42px;min-height:30px}
+.info{align-self:end;width:100%;max-width:var(--maxw);margin:0 auto;padding:42px 0 22px;opacity:0;transform:translateY(6px);transition:opacity .45s,transform .45s}
+.info.on{opacity:1;transform:none}
+.back{display:inline-block;font-size:11px;letter-spacing:.06em;color:var(--sub)}
+.back:hover{color:var(--ink)}
+.info h1{margin-top:-4px;font-size:16px;font-weight:700;letter-spacing:.01em;line-height:1.3}
+.info .sub{font-size:12px;color:var(--sub);margin-top:3px}
+.info .list{font-size:12px;color:var(--sub);margin-top:2px}
+.info p.note{font-size:13px;line-height:1.85;max-width:38em;margin-top:14px;color:var(--ink)}
+.info p.note a{border-bottom:1px solid var(--line)}
+.info p.note a:hover{border-color:var(--ink)}
+
+.strip{width:100%;max-width:var(--maxw);margin:0 auto;display:grid}
+.layer{grid-area:1/1;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:var(--gap);opacity:0;visibility:hidden;transition:opacity .5s ease}
+.layer.on{opacity:1;visibility:visible}
+.shot{display:block;width:100%;aspect-ratio:1/1.05;overflow:hidden;background:#EFEFED}
+.shot img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1);transition:filter .5s,transform .6s}
+.item:hover .shot img{filter:grayscale(0)}
+.cap{padding-top:9px;height:60px;overflow:hidden}
+.cap b{display:block;font-size:12px;font-weight:700;letter-spacing:.01em}
+.cap span{display:block;font-size:11px;color:var(--sub);margin-top:1px}
+.gallery .shot{cursor:zoom-in}
+.gallery .shot img{filter:none}
+.gallery .shot:hover img{transform:scale(1.03)}
+
+footer{display:flex;justify-content:space-between;align-items:center;height:74px;padding:0 0 4px;font-size:11px;color:var(--sub)}
+.dots{display:flex;gap:5px;align-items:center}
+.dots i{width:16px;height:2px;background:#DDD;display:block;cursor:pointer}
+.dots i.on{background:var(--ink)}
+.arrow{width:34px;height:34px;display:grid;place-items:center;color:#9A9A9A;border:1px solid var(--line);border-radius:50%}
+.arrow:hover{color:var(--ink);border-color:var(--ink)}
+.pager{display:flex;gap:26px}
+.pager a:hover{color:var(--ink)}
+
+.viewer{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.97);cursor:zoom-out}
+.viewer.open{display:flex}
+.viewer img{max-width:60vw;max-height:60vh;box-shadow:0 2px 24px rgba(0,0,0,.10)}
+
+@media (max-width:900px){
+:root{--side:22px;--gap:12px;--cols:3}
+header{padding-top:26px}
+nav{gap:16px;font-size:11px}
+.brand img{width:190px}
+.cap{height:54px}.cap b{font-size:11px}.cap span{font-size:10px}
+.info{padding:26px 0 16px}.info h1{font-size:15px}
+.pager{gap:16px}
+.viewer img{max-width:88vw;max-height:70vh}
+}
+</style>
+</head>
+<body data-view="home">
+<div class="page">
+
+<header>
+  <a class="brand" href="#/"><img src="images/logo.png" alt="2SOM ARCHITECTS"></a>
+  <nav><a href="#/" data-nav="home" class="on">WORKS</a><a href="#/about" data-nav="about">ABOUT</a><a href="#/contact" data-nav="contact">CONTACT</a></nav>
+</header>
+
+<main class="stage">
+  <div class="topbar" id="topbar"></div>
+  <div class="info" id="info"></div>
+  <div class="strip" id="strip"></div>
+</main>
+
+<footer>
+  <div class="dots" id="dots"></div>
+  <div id="tail"></div>
+</footer>
+
+</div>
+<div class="viewer" id="viewer"><img alt=""></div>
+
+<script>
+/* ===== 작품 목록 =====
+   t: 이름 / s: 아래 한 줄 / info: 나열 항목 / cover: 목록 사진 / images: 세부 사진 */
+const WORKS = [
+ {id:"p16", t:"도서관",        s:"강원도",  info:["문화시설","강원도","2025"],
+  cover:"images/p16-cover.jpg", images:["images/p16-01.jpg"]},
+ {id:"p15", t:"소방서",        s:"충남",    info:["업무시설","충남","2025"],
+  cover:"images/p15-cover.jpg", images:["images/p15-01.jpg"]},
+ {id:"p14", t:"교육연구시설",   s:"영천",    info:["교육연구시설","영천","2024"],
+  cover:"images/p14-cover.jpg", images:["images/p14-01.jpg"]},
+ {id:"p13", t:"소방서",        s:"부산",    info:["업무시설","부산","2023"],
+  cover:"images/p13-cover.jpg", images:["images/p13-01.jpg"]},
+ {id:"p12", t:"교육시설",       s:"강원도",  info:["교육시설","강원도","2023"],
+  cover:"images/p12-cover.jpg", images:["images/p12-01.jpg"]},
+ {id:"p11", t:"주민공동시설",   s:"경북",    info:["주민공동시설","경북","2023"],
+  cover:"images/p11-cover.jpg", images:["images/p11-01.jpg"]},
+ {id:"p10", t:"주민공동시설",   s:"창원시",  info:["근린생활시설","창원시","2022"],
+  cover:"images/p10-cover.jpg", images:["images/p10-01.jpg","images/p10-02.jpg","images/p10-03.jpg","images/p10-04.jpg"]},
+ {id:"p09", t:"주민공동시설",   s:"고대도",  info:["근린생활시설","고대도","2021"],
+  cover:"images/p09-cover.jpg", images:["images/p09-01.jpg","images/p09-02.jpg","images/p09-03.jpg"]},
+ {id:"p08", t:"다가구주택",     s:"성남시",  info:["다가구주택","성남시","2020"],
+  cover:"images/p08-cover.jpg", images:["images/p08-01.jpg","images/p08-02.jpg"]},
+ {id:"p07", t:"근린생활시설",   s:"서울 · 사옥", info:["근린생활시설","서울","2018"],
+  cover:"images/p07-cover.jpg", images:["images/p07-01.jpg","images/p07-02.jpg"]},
+ {id:"p06", t:"주택",           s:"고양시",  info:["단독주택","고양시","2018"],
+  cover:"images/p06-cover.jpg", images:["images/p06-01.jpg"]},
+ {id:"p05", t:"상업시설",       s:"서울",    info:["상업시설","서울","2017"],
+  cover:"images/p05-cover.jpg", images:["images/p05-01.jpg"]},
+ {id:"p04", t:"다가구주택",     s:"남양주",  info:["다가구주택","남양주","2017"],
+  cover:"images/p04-cover.jpg", images:["images/p04-01.jpg"]},
+ {id:"p03", t:"근린생활시설",   s:"서울 · 사옥", info:["근린생활시설","단독주택","서울","2017"],
+  cover:"images/p03-cover.jpg", images:["images/p03-01.jpg","images/p03-02.jpg"]},
+ {id:"p02", t:"업무시설",       s:"서울 · 사옥", info:["업무시설","서울","2016"],
+  cover:"images/p02-cover.jpg", images:["images/p02-01.jpg","images/p02-02.jpg"]},
+ {id:"p01", t:"공공디자인",     s:"부산 · 신진건축사 아이디어 공모", info:["공공디자인","부산","2015"],
+  cover:"images/p01-cover.jpg", images:["images/p01-01.jpg","images/p01-02.jpg","images/p01-03.jpg","images/p01-04.jpg"]}
+];
+
+const ABOUT = "이솜건축의 이름은 '솜솜하다', 잊히지 않고 오래 아른거린다는 뜻에서 시작했습니다.<br>이름은 정체성이자 지향점입니다. 첫인상보다 시간이 지나도 편안하고, 오래 보아도 좋은 건축을 지향합니다.<br>또한 사람과 사람 사이의 소통을 건축의 중요한 출발점으로 생각합니다. 사용자와 충분히 소통하며 아름다움, 안전, 편의가 균형을 이루는 공간을 만들고자 합니다.";
+const CONTACT = "서울시 마포구 월드컵로1길 54 (우) 04026<br>070-4158-8436<br><a href=\"mailto:nwj777@hanmail.net\">nwj777@hanmail.net</a>";
+
+const strip=document.getElementById("strip"), info=document.getElementById("info"),
+      topbar=document.getElementById("topbar"), dots=document.getElementById("dots"),
+      tail=document.getElementById("tail"), viewer=document.getElementById("viewer");
+const per=()=>window.innerWidth<=900?3:7;
+let page=0, cols=0, busy=false, cells=[];
+
+function paint(){
+  cols=per();
+  const n=Math.max(1,Math.ceil(cells.length/cols));
+  page=Math.min(page,n-1);
+  let html="";
+  for(let p=0;p<n;p++)
+    html+=`<div class="layer${p===page?" on":""}">`+cells.slice(p*cols,p*cols+cols).join("")+`</div>`;
+  strip.innerHTML=html;
+  strip.classList.toggle("gallery", document.body.dataset.view==="work");
+  dots.innerHTML=n>1?Array.from({length:n},(_,i)=>`<i class="${i===page?"on":""}" data-p="${i}"></i>`).join(""):"";
+  if(document.body.dataset.view==="work")
+    strip.querySelectorAll(".shot").forEach(a=>a.onclick=e=>{
+      e.preventDefault();
+      viewer.querySelector("img").src=a.dataset.full;
+      viewer.classList.add("open");});
+}
+function show(p){
+  const L=strip.querySelectorAll(".layer"), n=L.length; page=(p+n)%n;
+  L.forEach((el,i)=>el.classList.toggle("on",i===page));
+  [...dots.children].forEach((el,i)=>el.classList.toggle("on",i===page));
+}
+function go(d){ if(busy)return; const n=strip.children.length; if(n<2)return;
+  busy=true; show(page+d); setTimeout(()=>busy=false,520); }
+
+function home(){
+  info.className="info"; info.innerHTML=""; topbar.innerHTML="";
+  cells=WORKS.map(w=>`<div class="item">
+    <a class="shot" href="#/work/${w.id}" aria-label="${w.t}"><img src="${w.cover}" alt="${w.t}" loading="lazy"></a>
+    <div class="cap"><b>${w.t}</b><span>${w.s}</span></div></div>`);
+  tail.innerHTML=`<button class="arrow" id="next" aria-label="다음"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 5l7 7-7 7"/></svg></button>`;
+  page=0; paint();
+  document.getElementById("next").onclick=()=>go(1);
+}
+
+function work(id){
+  const i=WORKS.findIndex(w=>w.id===id); if(i<0) return location.hash="#/";
+  const w=WORKS[i], pv=WORKS[(i-1+WORKS.length)%WORKS.length], nx=WORKS[(i+1)%WORKS.length];
+  topbar.innerHTML=`<a class="back" href="#/">← WORKS</a>`;
+  info.innerHTML=`<h1>${w.t}</h1><div class="sub">${w.s}</div><div class="list">${w.info.join("  ·  ")}</div>`;
+  requestAnimationFrame(()=>info.classList.add("on"));
+  cells=w.images.map(s=>`<div class="item">
+    <a class="shot" href="#" data-full="${s}"><img src="${s}" alt="${w.t}" loading="lazy"></a>
+    <div class="cap"></div></div>`);
+  tail.innerHTML=`<div class="pager"><a href="#/work/${pv.id}">← ${pv.t}</a><a href="#/work/${nx.id}">${nx.t} →</a></div>`;
+  page=0; paint();
+}
+
+function text(title, body){
+  topbar.innerHTML=`<a class="back" href="#/">← WORKS</a>`;
+  info.innerHTML=`<h1>${title}</h1><p class="note">${body}</p>`;
+  requestAnimationFrame(()=>info.classList.add("on"));
+  cells=[]; strip.innerHTML=""; dots.innerHTML=""; tail.innerHTML="";
+}
+
+viewer.onclick=()=>viewer.classList.remove("open");
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")viewer.classList.remove("open");
+  if(e.key==="ArrowRight")go(1); if(e.key==="ArrowLeft")go(-1);});
+document.addEventListener("wheel",e=>{
+  if(viewer.classList.contains("open"))return;
+  e.preventDefault(); go((Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY)>0?1:-1);},{passive:false});
+let x0=null;
+document.addEventListener("pointerdown",e=>x0=e.clientX);
+document.addEventListener("pointerup",e=>{
+  if(x0===null)return; const dx=e.clientX-x0; x0=null; if(Math.abs(dx)>45)go(dx<0?1:-1);});
+dots.onclick=e=>{const b=e.target.closest("[data-p]"); if(b)show(+b.dataset.p);};
+window.addEventListener("resize",()=>{ if(per()!==cols){page=0;paint();} });
+
+function route(){
+  const [p,id]=location.hash.replace(/^#\/?/,"").split("/");
+  const view=(p==="work"&&id)?"work":(p==="about"||p==="contact")?p:"home";
+  document.body.dataset.view=view;
+  document.querySelectorAll("[data-nav]").forEach(a=>a.classList.toggle("on",a.dataset.nav===(view==="work"?"home":view)));
+  if(view==="work")work(id);
+  else if(view==="about")text("ABOUT",ABOUT);
+  else if(view==="contact")text("CONTACT",CONTACT);
+  else home();
+}
+window.addEventListener("hashchange",route);
+route();
+</script>
+</body>
+</html>
