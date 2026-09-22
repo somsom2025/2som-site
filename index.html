@@ -10,6 +10,8 @@
 :root{--red:#C8102E;--ink:#111;--sub:#8A8A8A;--line:#E4E4E4;--side:130px;--gap:30px;--cols:7;--maxw:none}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
+body[data-view="about"],body[data-view="contact"]{overflow-y:auto}
+body[data-view="about"] .page,body[data-view="contact"] .page{height:auto;min-height:100%}
 body{background:#fff;color:var(--ink);font-family:Pretendard,-apple-system,"Malgun Gothic",sans-serif;font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -31,9 +33,13 @@ nav a:hover,nav a.on{border-color:var(--ink)}
 .back{display:inline-block;font-size:11px;letter-spacing:.06em;color:var(--sub)}
 .back:hover{color:var(--ink)}
 .info h1{margin-top:-4px;font-size:16px;font-weight:700;letter-spacing:.01em;line-height:1.3}
-.info .sub{font-size:12px;color:var(--sub);margin-top:3px}
+.info .te{font-size:10.5px;letter-spacing:.09em;color:#A6A6A6;margin-top:2px}
+.info .sub{font-size:12px;color:var(--sub);margin-top:6px}
+.info .sub.en,.info .list.en{font-size:10.5px;letter-spacing:.03em;color:#A6A6A6;margin-top:1px}
 .info .list{font-size:12px;color:var(--sub);margin-top:2px}
 .info p.note{font-size:13px;line-height:1.85;max-width:38em;margin-top:14px;color:var(--ink)}
+.info p.note .en{display:block;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;line-height:1.8;color:#8E8E8E}
+.info p.note .en i{font-style:italic}
 .info p.note a{border-bottom:1px solid var(--line)}
 .info p.note a:hover{border-color:var(--ink)}
 
@@ -43,9 +49,11 @@ nav a:hover,nav a.on{border-color:var(--ink)}
 .shot{display:block;width:100%;aspect-ratio:1/1.05;overflow:hidden;background:#EFEFED}
 .shot img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1);transition:filter .5s,transform .6s}
 .item:hover .shot img{filter:grayscale(0)}
-.cap{padding-top:9px;height:60px;overflow:hidden}
+.cap{padding-top:9px;height:84px;overflow:hidden}
 .cap b{display:block;font-size:12px;font-weight:700;letter-spacing:.01em}
-.cap span{display:block;font-size:11px;color:var(--sub);margin-top:1px}
+.cap i{display:block;font-style:normal;font-size:10px;letter-spacing:.06em;color:#A6A6A6;margin-top:1px}
+.cap span{display:block;font-size:11px;color:var(--sub);margin-top:4px}
+.cap span.en{font-size:10px;letter-spacing:.03em;color:#A6A6A6;margin-top:0}
 .gallery .shot{cursor:zoom-in}
 .gallery .shot img{filter:none}
 .gallery .shot:hover img{transform:scale(1.03)}
@@ -66,9 +74,9 @@ footer{display:flex;justify-content:space-between;align-items:center;height:74px
 @media (max-width:900px){
 :root{--side:22px;--gap:12px;--cols:3}
 header{padding-top:26px}
-nav{gap:16px;font-size:11px}
-.brand img{width:190px}
-.cap{height:54px}.cap b{font-size:11px}.cap span{font-size:10px}
+nav{gap:13px;font-size:10.5px}
+.brand img{width:150px}
+.cap{height:76px}.cap b{font-size:11px}.cap span{font-size:10px}.cap i,.cap span.en{font-size:9px}
 .info{padding:26px 0 16px}.info h1{font-size:15px}
 .pager{gap:16px}
 .viewer img{max-width:88vw;max-height:70vh}
@@ -102,41 +110,59 @@ nav{gap:16px;font-size:11px}
    t: 이름 / s: 아래 한 줄 / info: 나열 항목 / cover: 목록 사진 / images: 세부 사진 */
 const WORKS = [
  {id:"p16", t:"도서관",        s:"강원도",  info:["문화시설","강원도","2025"],
+  te:"LIBRARY", se:"Gangwon", ie:["Cultural Facility","Gangwon","2025"],
   cover:"images/p16-cover.jpg", images:["images/p16-01.jpg"]},
  {id:"p15", t:"소방서",        s:"충남",    info:["업무시설","충남","2025"],
+  te:"FIRE STATION", se:"Chungnam", ie:["Public Office","Chungnam","2025"],
   cover:"images/p15-cover.jpg", images:["images/p15-01.jpg"]},
  {id:"p14", t:"교육연구시설",   s:"영천",    info:["교육연구시설","영천","2024"],
+  te:"EDUCATION & RESEARCH", se:"Yeongcheon", ie:["Education & Research","Yeongcheon","2024"],
   cover:"images/p14-cover.jpg", images:["images/p14-01.jpg"]},
  {id:"p13", t:"소방서",        s:"부산",    info:["업무시설","부산","2023"],
+  te:"FIRE STATION", se:"Busan", ie:["Public Office","Busan","2023"],
   cover:"images/p13-cover.jpg", images:["images/p13-01.jpg"]},
  {id:"p12", t:"교육시설",       s:"강원도",  info:["교육시설","강원도","2023"],
+  te:"SCHOOL", se:"Gangwon", ie:["Educational Facility","Gangwon","2023"],
   cover:"images/p12-cover.jpg", images:["images/p12-01.jpg"]},
  {id:"p11", t:"주민공동시설",   s:"경북",    info:["주민공동시설","경북","2023"],
+  te:"COMMUNITY CENTER", se:"Gyeongbuk", ie:["Community Facility","Gyeongbuk","2023"],
   cover:"images/p11-cover.jpg", images:["images/p11-01.jpg"]},
  {id:"p10", t:"주민공동시설",   s:"창원시",  info:["근린생활시설","창원시","2022"],
+  te:"COMMUNITY CENTER", se:"Changwon", ie:["Neighborhood Facility","Changwon","2022"],
   cover:"images/p10-cover.jpg", images:["images/p10-01.jpg","images/p10-02.jpg","images/p10-03.jpg","images/p10-04.jpg"]},
  {id:"p09", t:"주민공동시설",   s:"고대도",  info:["근린생활시설","고대도","2021"],
+  te:"COMMUNITY CENTER", se:"Godaedo", ie:["Neighborhood Facility","Godaedo","2021"],
   cover:"images/p09-cover.jpg", images:["images/p09-01.jpg","images/p09-02.jpg","images/p09-03.jpg"]},
  {id:"p08", t:"다가구주택",     s:"성남시",  info:["다가구주택","성남시","2020"],
+  te:"MULTI-FAMILY HOUSE", se:"Seongnam", ie:["Multi-family House","Seongnam","2020"],
   cover:"images/p08-cover.jpg", images:["images/p08-01.jpg","images/p08-02.jpg"]},
- {id:"p07", t:"근린생활시설",   s:"서울 · 사옥", info:["근린생활시설","서울","2018"],
+ {id:"p07", t:"근린생활시설",   s:"서울 · 사옥", info:["오피스","매장","서울","2018"],
+  te:"NEIGHBORHOOD FACILITY", se:"Seoul · Own Office", ie:["Office","Retail","Seoul","2018"],
   cover:"images/p07-cover.jpg", images:["images/p07-01.jpg","images/p07-02.jpg"]},
  {id:"p06", t:"주택",           s:"고양시",  info:["단독주택","고양시","2018"],
+  te:"HOUSE", se:"Goyang", ie:["House","Goyang","2018"],
   cover:"images/p06-cover.jpg", images:["images/p06-01.jpg"]},
  {id:"p05", t:"상업시설",       s:"서울",    info:["상업시설","서울","2017"],
+  te:"COMMERCIAL", se:"Seoul", ie:["Commercial Facility","Seoul","2017"],
   cover:"images/p05-cover.jpg", images:["images/p05-01.jpg"]},
- {id:"p04", t:"다가구주택",     s:"남양주",  info:["다가구주택","남양주","2017"],
+ {id:"p04", t:"다가구주택",     s:"남양주",  info:["매장","주택","남양주","2017"],
+  te:"MULTI-FAMILY HOUSE", se:"Namyangju", ie:["Retail","Housing","Namyangju","2017"],
   cover:"images/p04-cover.jpg", images:["images/p04-01.jpg"]},
- {id:"p03", t:"근린생활시설",   s:"서울 · 사옥", info:["근린생활시설","단독주택","서울","2017"],
+ {id:"p03", t:"근린생활시설",   s:"서울 · 사옥", info:["매장","오피스","주택","서울","2017"],
+  te:"NEIGHBORHOOD FACILITY & HOUSE", se:"Seoul · Own Office", ie:["Retail","Office","Housing","Seoul","2017"],
   cover:"images/p03-cover.jpg", images:["images/p03-01.jpg","images/p03-02.jpg"]},
  {id:"p02", t:"업무시설",       s:"서울 · 사옥", info:["업무시설","서울","2016"],
+  te:"OFFICE BUILDING", se:"Seoul · Own Office", ie:["Office Building","Seoul","2016"],
   cover:"images/p02-cover.jpg", images:["images/p02-01.jpg","images/p02-02.jpg"]},
  {id:"p01", t:"공공디자인",     s:"부산 · 신진건축사 아이디어 공모", info:["공공디자인","부산","2015"],
+  te:"PUBLIC DESIGN", se:"Busan · Young Architect Competition", ie:["Public Design","Busan","2015"],
   cover:"images/p01-cover.jpg", images:["images/p01-01.jpg","images/p01-02.jpg","images/p01-03.jpg","images/p01-04.jpg"]}
 ];
 
-const ABOUT = "이솜건축의 이름은 '솜솜하다', 잊히지 않고 오래 아른거린다는 뜻에서 시작했습니다.<br>이름은 정체성이자 지향점입니다. 첫인상보다 시간이 지나도 편안하고, 오래 보아도 좋은 건축을 지향합니다.<br>또한 사람과 사람 사이의 소통을 건축의 중요한 출발점으로 생각합니다. 사용자와 충분히 소통하며 아름다움, 안전, 편의가 균형을 이루는 공간을 만들고자 합니다.";
-const CONTACT = "서울시 마포구 월드컵로1길 54, 201호 (우) 04026<br>070-4158-8436<br><a href=\"mailto:nwj777@hanmail.net\">nwj777@hanmail.net</a>";
+const ABOUT = "이솜건축의 이름은 '솜솜하다', 잊히지 않고 오래 아른거린다는 뜻에서 시작했습니다.<br>이름은 정체성이자 지향점입니다. 첫인상보다 시간이 지나도 편안하고, 오래 보아도 좋은 건축을 지향합니다.<br>또한 사람과 사람 사이의 소통을 건축의 중요한 출발점으로 생각합니다. 사용자와 충분히 소통하며 아름다움, 안전, 편의가 균형을 이루는 공간을 만들고자 합니다."
+  + "<span class='en'>The name 2SOM comes from the Korean word <i>somsom-hada</i>, describing something that lingers in the mind and is not easily forgotten.<br>A name is both an identity and a direction. We aim for architecture that feels comfortable as time passes and holds up to long acquaintance, rather than one that only impresses at first sight.<br>We also regard communication between people as an essential starting point of architecture. Through close dialogue with those who use a building, we seek spaces where beauty, safety and convenience are in balance.</span>";
+const CONTACT = "서울시 마포구 월드컵로1길 54, 201호 (우) 04026<br>070-4158-8436<br><a href=\"mailto:nwj777@hanmail.net\">nwj777@hanmail.net</a>"
+  + "<span class='en'>#201, 54, World Cup-ro 1-gil, Mapo-gu, Seoul 04026, Republic of Korea</span>";
 
 const strip=document.getElementById("strip"), info=document.getElementById("info"),
       topbar=document.getElementById("topbar"), dots=document.getElementById("dots"),
@@ -172,7 +198,7 @@ function home(){
   info.className="info"; info.innerHTML=""; topbar.innerHTML="";
   cells=WORKS.map(w=>`<div class="item">
     <a class="shot" href="#/work/${w.id}" aria-label="${w.t}"><img src="${w.cover}" alt="${w.t}" loading="lazy"></a>
-    <div class="cap"><b>${w.t}</b><span>${w.s}</span></div></div>`);
+    <div class="cap"><b>${w.t}</b><i>${w.te}</i><span>${w.s}</span><span class="en">${w.se}</span></div></div>`);
   tail.innerHTML=`<button class="arrow" id="next" aria-label="다음"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 5l7 7-7 7"/></svg></button>`;
   page=0; paint();
   document.getElementById("next").onclick=()=>go(1);
@@ -182,7 +208,9 @@ function work(id){
   const i=WORKS.findIndex(w=>w.id===id); if(i<0) return location.hash="#/";
   const w=WORKS[i], pv=WORKS[(i-1+WORKS.length)%WORKS.length], nx=WORKS[(i+1)%WORKS.length];
   topbar.innerHTML=`<a class="back" href="#/">← WORKS</a>`;
-  info.innerHTML=`<h1>${w.t}</h1><div class="sub">${w.s}</div><div class="list">${w.info.join("  ·  ")}</div>`;
+  info.innerHTML=`<h1>${w.t}</h1><div class="te">${w.te}</div>
+    <div class="sub">${w.s}</div><div class="sub en">${w.se}</div>
+    <div class="list">${w.info.join("  ·  ")}</div><div class="list en">${w.ie.join("  ·  ")}</div>`;
   requestAnimationFrame(()=>info.classList.add("on"));
   cells=w.images.map(s=>`<div class="item">
     <a class="shot" href="#" data-full="${s}"><img src="${s}" alt="${w.t}" loading="lazy"></a>
